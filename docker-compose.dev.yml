@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  memes_service:
+    container_name: memes_api
+    build:
+      dockerfile: docker/Dockerfile
+      context: ./memes_service
+      target: development
+    ports:
+      - "8001:8000"
+    restart: unless-stopped
+    volumes:
+      - ./memes_service:/app
+
+  media_files_service:
+    container_name: media_files_api
+    build:
+      dockerfile: docker/Dockerfile
+      context: ./media_files_service
+      target: development
+    ports:
+      - "8002:8000"
+    restart: unless-stopped
+    volumes:
+      - ./media_files_service:/app

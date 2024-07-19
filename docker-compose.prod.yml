@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  memes_service:
+    container_name: memes_api
+    build:
+      dockerfile: docker/Dockerfile
+      context: ./memes_service
+      target: production
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      default:
+      memes_service_backend:
+
+  media_files_service:
+    container_name: media_files_api
+    build:
+      dockerfile: docker/Dockerfile
+      context: ./media_files_service
+      target: production
+    restart: unless-stopped
+    networks:
+      default:
+      media_files_service_backend:
+
+
+
+networks:
+  memes_service_backend:
+    driver: bridge
+  media_files_service_backend:
+    driver: bridge
