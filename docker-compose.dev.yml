@@ -13,6 +13,17 @@ services:
     volumes:
       - ./memes_service:/app
 
+  memes_db:
+    container_name: memes_postgres
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    env_file:
+      - ./memes_service/.env
+    volumes:
+      - memes_postgres_data:/var/lib/postgresql/data
+
   media_files_service:
     container_name: media_files_api
     build:
@@ -24,3 +35,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./media_files_service:/app
+
+
+volumes:
+  memes_postgres_data:

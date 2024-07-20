@@ -10,9 +10,27 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+    depends_on:
+      - memes_db
     networks:
       default:
       memes_service_backend:
+
+  memes_db:
+    container_name: memes_postgres
+    image: postgres:16
+    restart: unless-stopped
+    env_file:
+      - ./memes_service/.env
+    volumes:
+      - memes_postgres_data:/var/lib/postgresql/data
+    networks:
+      memes_service_backend:
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U memes_service -d memes_service'" ]
+      interval: 30s
+      timeout: 30s
+      retries: 5
 
   media_files_service:
     container_name: media_files_api
@@ -26,9 +44,12 @@ services:
       media_files_service_backend:
 
 
-
 networks:
   memes_service_backend:
     driver: bridge
   media_files_service_backend:
     driver: bridge
+
+
+volumes:
+  memes_postgres_data:

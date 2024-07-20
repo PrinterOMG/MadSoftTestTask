@@ -9,3 +9,6 @@ down-dev:
 
 down-prod:
 	docker compose -f docker-compose.prod.yml down
+
+migrate-all:
+	docker exec memes_api alembic upgrade heads

@@ -13,7 +13,14 @@ uvloop = {markers = "sys_platform != \"win32\"", version = "^0.19.0"}
 httptools = "^0.6.1"
 gunicorn = "^22.0.0"
 pydantic-settings = "^2.3.4"
+sqlalchemy = {extras = ["asyncio", "asyncpg"], version = "^2.0.31"}
+alembic = "^1.13.2"
+dishka = "^1.2.0"
+asyncpg = "^0.29.0"
 
+
+[tool.poetry.group.dev.dependencies]
+uvicorn = "^0.30.3"
 
 [build-system]
 requires = ["poetry-core"]
