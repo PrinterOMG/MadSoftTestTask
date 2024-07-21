@@ -13,6 +13,7 @@ class MemeBase(BaseModel):
 class MemeRead(MemeBase):
     id: UUID
     created_at: dt.datetime
+    image_url: str
 
 
 class MemeCreate(MemeBase): ...

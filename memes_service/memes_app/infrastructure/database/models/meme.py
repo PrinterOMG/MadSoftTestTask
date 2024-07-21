@@ -10,4 +10,5 @@ class MemeModel(BaseModel):
 
     title: Mapped[str] = mapped_column()
     description: Mapped[str] = mapped_column()
+    image_url: Mapped[str] = mapped_column()
     created_at: Mapped[dt.datetime] = mapped_column()

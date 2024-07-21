@@ -16,6 +16,8 @@ class AppConfig(BaseSettings):
     POSTGRES_HOST: str = 'postgres'
     POSTGRES_PORT: int = 5432
 
+    MEDIA_FILES_API_URL: str
+
     @computed_field  # type: ignore[misc]
     @property
     def database_uri(self) -> str:

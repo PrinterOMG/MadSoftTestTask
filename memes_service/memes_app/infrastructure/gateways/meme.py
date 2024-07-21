@@ -15,13 +15,15 @@ class MemeGateway(MemeReader, MemeSaver, MemeUpdater, MemeDeleter):
     def __init__(self, session: AsyncSession):
         self._session = session
 
-    def _db_to_entity(self, db_meme: MemeModel | None) -> MemeEntity | None:
+    @staticmethod
+    def _db_to_entity(db_meme: MemeModel | None) -> MemeEntity | None:
         if db_meme is None:
             return None
 
         return MemeEntity(
             id=str(db_meme.id),
             title=db_meme.title,
+            image_url=db_meme.image_url,
             description=db_meme.description,
             created_at=db_meme.created_at,
         )
@@ -41,6 +43,7 @@ class MemeGateway(MemeReader, MemeSaver, MemeUpdater, MemeDeleter):
             insert(MemeModel).values(
                 id=meme.id,
                 title=meme.title,
+                image_url=meme.image_url,
                 description=meme.description,
                 created_at=meme.created_at,
             ),

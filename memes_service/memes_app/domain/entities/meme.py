@@ -6,5 +6,6 @@ import dataclasses
 class MemeEntity:
     id: str
     created_at: dt.datetime
+    image_url: str
     title: str
     description: str
