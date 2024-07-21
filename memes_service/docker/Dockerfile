@@ -59,7 +59,7 @@ COPY . .
 
 EXPOSE 8000
 ENTRYPOINT /docker-entrypoint.sh "$0" $@
-CMD ["poetry", "run", "uvicorn", "--factory", "memes_app.main:create_app", "--host=0.0.0.0", "--port=8000", "--reload"]
+CMD ["poetry", "run", "uvicorn", "--factory", "memes_app.main:create_production_app", "--host=0.0.0.0", "--port=8000", "--reload"]
 
 
 # 'production' stage uses the clean 'python-base' stage and copyies
@@ -77,4 +77,4 @@ COPY . /app
 WORKDIR /app
 
 ENTRYPOINT /docker-entrypoint.sh "$0" $@
-CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "--config /gunicorn_conf.py", "memes_app.main:create_app()"]
+CMD [ "gunicorn", "--worker-class uvicorn.workers.UvicornWorker", "--config /gunicorn_conf.py", "memes_app.main:create_production_app()"]

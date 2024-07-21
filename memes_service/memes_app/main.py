@@ -7,15 +7,6 @@ from memes_app.controllers.http.routers.main import router
 from memes_app.ioc.main import providers
 
 
-config = get_config()
-async_container = make_async_container(
-    *providers,
-    context={
-        AppConfig: config,
-    },
-)
-
-
 def create_app() -> FastAPI:
     app = FastAPI(
         title='Memes API',
@@ -25,6 +16,20 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(router, prefix='/api')
+
+    return app
+
+
+def create_production_app() -> FastAPI:
+    app = create_app()
+
+    config = get_config()
+    async_container = make_async_container(
+        *providers,
+        context={
+            AppConfig: config,
+        },
+    )
 
     setup_dishka(
         app=app,

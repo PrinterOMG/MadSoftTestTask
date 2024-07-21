@@ -2,7 +2,7 @@ from aiohttp import ClientSession
 from typing import AsyncIterable
 import datetime as dt
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker
 from uuid import uuid4
 
 from dishka import AnyOf, Provider, Scope, from_context, provide
@@ -13,7 +13,7 @@ from memes_app.application.interfaces.media_files_service_api import (
 )
 from memes_app.application.interfaces.unit_of_work import UnitOfWork
 from memes_app.config import AppConfig
-from memes_app.infrastructure.database.database import new_session_maker
+from memes_app.infrastructure.database.database import new_engine, new_session_maker
 from memes_app.infrastructure.media_files_service_api import MediaFilesServiceApi
 from memes_app.ioc.gateways import GatewaysProvider
 from memes_app.ioc.interactors import InteractorsProvider
@@ -31,11 +31,15 @@ class AppProvider(Provider):
         return dt.datetime.utcnow
 
     @provide(scope=Scope.APP)
+    def get_async_engine(self, config: AppConfig) -> AsyncEngine:
+        return new_engine(database_uri=config.database_uri)
+
+    @provide(scope=Scope.APP)
     def get_async_sessionmaker(
         self,
-        config: AppConfig,
+        engine: AsyncEngine,
     ) -> async_sessionmaker[AsyncSession]:
-        return new_session_maker(config=config)
+        return new_session_maker(engine=engine)
 
     @provide(scope=Scope.REQUEST)
     async def get_async_session(
@@ -45,6 +49,8 @@ class AppProvider(Provider):
         async with async_session_maker() as session:
             yield session
 
+
+class MediaFilersProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def get_media_files_api(
         self,
@@ -61,4 +67,5 @@ providers = (
     AppProvider(),
     GatewaysProvider(),
     InteractorsProvider(),
+    MediaFilersProvider(),
 )
