@@ -15,5 +15,5 @@ class DownloadFileInteractor:
     async def __call__(
         self,
         filename: str,
-    ) -> tuple[AsyncGenerator[bytes], str]:
+    ) -> tuple[AsyncGenerator[bytes, None], str]:
         return await self._media_files_api.download_file(filename)

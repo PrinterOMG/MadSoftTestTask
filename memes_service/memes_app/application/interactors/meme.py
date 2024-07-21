@@ -42,8 +42,8 @@ class GetAllMemesInteractor:
     ):
         self._meme_gateway = meme_gateway
 
-    async def __call__(self) -> list[MemeEntity]:
-        return await self._meme_gateway.get_all()
+    async def __call__(self, limit: int, offset: int) -> list[MemeEntity]:
+        return await self._meme_gateway.get_all(limit=limit, offset=offset)
 
 
 class CreateMemeInteractor:

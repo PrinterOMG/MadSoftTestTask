@@ -42,7 +42,7 @@ class MediaFilesServiceApi(MediaFilesServiceApiProtocol):
         self,
         filename: str,
         chunk_size: int = 64 * 1024,
-    ) -> tuple[AsyncGenerator[bytes], str]:
+    ) -> tuple[AsyncGenerator[bytes, None], str]:
         url = self._media_files_api_url + '/api/files/download/' + filename
 
         # Не используем контекстный менеджер, чтобы не закрылось соединение
@@ -53,7 +53,7 @@ class MediaFilesServiceApi(MediaFilesServiceApiProtocol):
         response.raise_for_status()
 
         # Оборачиваем в асинхронный генератор, чтобы было удобнее обрабатывать ошибки
-        async def file_generator() -> AsyncGenerator[bytes]:
+        async def file_generator() -> AsyncGenerator[bytes, None]:
             try:
                 while True:
                     chunk = await response.content.read(chunk_size)

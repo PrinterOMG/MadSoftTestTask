@@ -10,7 +10,7 @@ class MemeReader(Protocol):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_all(self) -> list[MemeEntity]:
+    async def get_all(self, limit: int, offset: int) -> list[MemeEntity]:
         raise NotImplementedError
 
 

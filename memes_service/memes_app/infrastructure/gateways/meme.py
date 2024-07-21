@@ -32,9 +32,12 @@ class MemeGateway(MemeReader, MemeSaver, MemeUpdater, MemeDeleter):
         meme = await self._session.get(MemeModel, id)
         return self._db_to_entity(meme)
 
-    async def get_all(self) -> list[MemeEntity]:
+    async def get_all(self, limit: int, offset: int) -> list[MemeEntity]:
         memes = await self._session.scalars(
-            select(MemeModel),
+            select(MemeModel)
+            .order_by(MemeModel.created_at.desc())
+            .offset(offset)
+            .limit(limit),
         )
         return [self._db_to_entity(meme) for meme in memes]
 

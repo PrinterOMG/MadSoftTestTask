@@ -4,7 +4,7 @@ from uuid import UUID
 
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
-from fastapi import APIRouter, Depends, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, Form, HTTPException, Query, UploadFile, status
 
 from memes_app.application.dto.meme import NewMemeDTO, UpdateMemeDTO
 from memes_app.application.interactors.meme import (
@@ -29,9 +29,12 @@ router = APIRouter(route_class=DishkaRoute)
     response_model=list[MemeRead],
 )
 async def get_all_memes(
+    limit: Annotated[int, Query(ge=1, le=100)] = 100,
+    offset: Annotated[int, Query(ge=0)] = 0,
+    *,
     interactor: FromDishka[GetAllMemesInteractor],
 ):
-    return await interactor()
+    return await interactor(limit=limit, offset=offset)
 
 
 @router.get(

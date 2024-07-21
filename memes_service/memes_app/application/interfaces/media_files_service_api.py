@@ -18,5 +18,5 @@ class MediaFilesServiceApiProtocol:
         self,
         filename: str,
         chunk_size: int = 64 * 1024,
-    ) -> tuple[AsyncGenerator[bytes], str]:
+    ) -> tuple[AsyncGenerator[bytes, None], str]:
         raise NotImplementedError
