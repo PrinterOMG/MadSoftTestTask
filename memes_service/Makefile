@@ -3,3 +3,6 @@ make-migrations:
 
 migrate:
 	docker exec memes_api alembic upgrade heads
+
+run-test:
+	poetry run pytest -vv tests
