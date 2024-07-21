@@ -29,5 +29,8 @@ class DownloadFileInteractor:
     def __init__(self, storage: FileStorage):
         self._storage = storage
 
-    async def __call__(self, filename: str) -> tuple[Generator[bytes], str | None]:
+    async def __call__(
+        self,
+        filename: str,
+    ) -> tuple[Generator[bytes, None, None], str | None]:
         return self._storage.download_file(filename)

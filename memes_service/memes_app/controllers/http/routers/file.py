@@ -18,6 +18,9 @@ async def download_file(
     *,
     interactor: FromDishka[DownloadFileInteractor],
 ):
+    """
+    Returning a file by its name
+    """
     try:
         file, content_type = await interactor(filename)
         return StreamingResponse(file, media_type=content_type)

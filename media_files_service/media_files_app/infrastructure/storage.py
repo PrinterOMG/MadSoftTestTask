@@ -30,7 +30,7 @@ class MinIoFileStorage(FileStorage):
         self,
         name: str,
         chunk_size: int = 64 * 1024,
-    ) -> tuple[Generator[bytes], str | None]:
+    ) -> tuple[Generator[bytes, None, None], str | None]:
         try:
             info = self._client.stat_object(self._bucket_name, name)
         except S3Error as e:
@@ -40,7 +40,7 @@ class MinIoFileStorage(FileStorage):
 
         total_size = info.size
 
-        def file_generator() -> Generator[bytes]:
+        def file_generator() -> Generator[bytes, None, None]:
             offset = 0
             while True:
                 response = self._client.get_object(

@@ -34,6 +34,9 @@ async def get_all_memes(
     *,
     interactor: FromDishka[GetAllMemesInteractor],
 ):
+    """
+    Returns a list of all memes sorted by creation date (newest to oldest)
+    """
     return await interactor(limit=limit, offset=offset)
 
 
@@ -52,6 +55,9 @@ async def get_meme_by_id(
     *,
     interactor: FromDishka[GetMemeByIdInteractor],
 ):
+    """
+    Returns a meme by its id
+    """
     try:
         return await interactor(meme_id=str(meme_id))
     except MemeNotFoundError:
@@ -72,6 +78,11 @@ async def create_meme(
     *,
     interactor: FromDishka[CreateMemeInteractor],
 ):
+    """
+    Creates a new meme and returns it.
+
+    Image is required and should be less than 20 MB. Supported formats: PNG, JPEG.
+    """
     return await interactor(
         NewMemeDTO(
             title=meme_title,
@@ -99,6 +110,11 @@ async def update_meme(
     *,
     interactor: FromDishka[UpdateMemeInteractor],
 ):
+    """
+    Updates a meme and returns it. Only `title` and `description` can be updated with this endpoint.
+
+    In order to update the image, use the `PATCH api/memes/{meme_id}/update_image` endpoint.
+    """
     try:
         return await interactor(
             UpdateMemeDTO(
@@ -130,6 +146,13 @@ async def update_meme_image(
     *,
     interactor: FromDishka[UpdateMemeImageInteractor],
 ):
+    """
+    Updates the image of a meme and returns it. Only image can be updated with this endpoint.
+
+    Image should be less than 20 MB. Supported formats: PNG, JPEG.
+
+    In order to update the meme title and description, use the `PUT api/memes/{meme_id}` endpoint.
+    """
     try:
         return await interactor(
             meme_id=str(meme_id),
@@ -153,4 +176,9 @@ async def delete_meme(
     *,
     interactor: FromDishka[DeleteMemeInteractor],
 ):
+    """
+    Deletes a meme by its id.
+
+    ! If the meme does not exist, nothing happens, just returns 204.
+    """
     await interactor(meme_id=str(meme_id))

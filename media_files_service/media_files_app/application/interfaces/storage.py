@@ -18,7 +18,7 @@ class FileStorage(Protocol):
         self,
         name: str,
         chunk_size: int = 64 * 1024,
-    ) -> tuple[Generator[bytes], str | None]:
+    ) -> tuple[Generator[bytes, None, None], str | None]:
         """
         :param chunk_size:
         :param name:
